@@ -33,9 +33,17 @@ public class CurriculumObjectController {
         this.mapper = mapper;
     }
     @PostMapping
-    public ResponseEntity<CurriculumObjectDTO> createCurriculumObject(@Valid @RequestBody CurriculumObjectDTO objectDTO) {
+    public ResponseEntity<EntityModel<CurriculumObjectDTO>> createCurriculumObject(@Valid @RequestBody CurriculumObjectDTO objectDTO) {
         CurriculumObjectDTO createdObject = service.createCurriculumObject(objectDTO);
-        return new ResponseEntity<>(createdObject, HttpStatus.CREATED);
+        CurriculumObject object = mapper.INSTANCE.objectDTOToClass(createdObject);
+
+        Link selfLink = linkTo(CurriculumObjectController.class).slash(object.getId()).withSelfRel();
+        object.add(selfLink);
+
+        Link objectsLink = linkTo(CurriculumObjectController.class).withRel("Lista de objetos de currículo");
+
+        EntityModel<CurriculumObjectDTO> result = EntityModel.of(createdObject, selfLink, objectsLink);
+        return new ResponseEntity<>(result, HttpStatus.CREATED);
     }
 
     @GetMapping
