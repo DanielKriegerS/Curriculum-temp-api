@@ -41,7 +41,7 @@ public class SecurityConfig implements WebMvcConfigurer {
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/register").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST, "/objects").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.PUT, "/objects/**").hasRole("ADMIN") // Adicionando permissão para PUT
+                        .requestMatchers(HttpMethod.PUT, "/objects/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/objects/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
